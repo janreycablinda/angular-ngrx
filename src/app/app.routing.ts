@@ -24,7 +24,10 @@ export const AppRoutes: Routes = [
                 path: 'starter',
                 loadChildren: () => import('./starter/starter.module').then(m => m.StarterModule)
             },
-
+            {
+                path: 'home',
+                loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+            }
         ]
     },
     {

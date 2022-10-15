@@ -1,57 +1,60 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from "rxjs";
 import { Component, AfterViewInit, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Product } from './store/product.model'
 import { Store } from "@ngrx/store";
 import * as fromApp from "../store/app.reducer";
-import { tap } from 'rxjs/operators';
-import { P } from '@angular/cdk/keycodes';
-import { selectAllProducts } from '../store/app.reducer';
 
 @Component({
   selector: 'app-starter',
   templateUrl: './starter.component.html',
   styleUrls: ['./starter.component.scss']
 })
-export class StarterComponent implements AfterViewInit, OnInit {
-  products$!: Observable<{ products: Product[]; }>;
+export class StarterComponent implements OnInit {
+  // products$!: Observable<>;
+  products$!: Observable<any>;
+  myForm!: FormGroup;
+  
   // products!: Product[];
 
-  constructor(breakpointObserver: BreakpointObserver, private store: Store<fromApp.AppState>) {
-    breakpointObserver.observe(['(max-width: 600px)'])
-}
+  constructor(private store: Store<fromApp.AppState>, private fb: FormBuilder) {}
 
-displayedColumns = ['position', 'name', 'weight', 'symbol'];
+// displayedColumns = ['name', 'price', 'image_link', 'is_published'];
 
-dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
+// dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
 
   ngOnInit(): void {
-    console.log(this.store.select('products'))
+    this.products$ = this.store.select('products')
+    // this.store.select('products').subscribe(res => {
+    //   console.log(res.products)
+    // })
+
+    this.myForm  = this.fb.group({
+      name: 'test'
+    })
+    
   }
 
-  ngAfterViewInit() {
-    // this.store.select("products").subscribe(res => {
-    //   console.log(res.products)
-    //   this.products = res.products
-    // })
-    // console.log(this.store.select(selectAllProducts))
+  onSubmit(form: FormGroup){
+    console.log(form.value);
   }
 }
 
 export interface Element {
+  id: number;
   name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  price: number;
+  image_link: string;
+  is_published: boolean;
 }
 
 const ELEMENT_DATA: Element[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
+  { id: 1, name: 'Hydrogen', price: 1, image_link: 'http://', is_published: false },
+  { id: 2, name: 'Hydrogen', price: 2, image_link:'http://', is_published: false },
+  { id: 3, name: 'Hydrogen', price: 3, image_link:'http://', is_published: false },
+  { id: 4, name: 'Hydrogen', price: 4, image_link: 'http://', is_published: false },
+  { id: 5, name: 'Hydrogen', price: 5, image_link: 'http://', is_published: false }
 ];

@@ -8,7 +8,7 @@ export interface ProductListState {
 }
 
 const initialState: ProductListState = {
-    products: [new Product(1, "test", 1000, false), new Product(2, "test2", 1000, false)],
+    products: [new Product(1, "test", 1000, 'http://', false), new Product(2, "test2", 1000, 'http://', false)],
     editedProduct: <Product>{},
     editedProductIndex: -1,
 };
